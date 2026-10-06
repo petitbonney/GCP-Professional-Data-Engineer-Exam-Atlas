@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>PDE Exam Atlas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Schibsted+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" />
+  <link rel="stylesheet" href="src/css/styles.css" />
+</head>
+
+<body>
+  <header>
+    <div class="top">
+      <h1>
+        PDE Exam Atlas
+        <small>Google Cloud Professional Data Engineer · guide checked Oct 2026</small>
+      </h1>
+      <div class="tools">
+        <div class="search">
+          <input id="q" type="search" placeholder="Search services & concepts" autocomplete="off"
+            aria-label="Search the map" />
+          <div class="results" id="results" hidden></div>
+        </div>
+        <button class="btn" id="expand" type="button">Expand all</button>
+        <button class="btn" id="collapse" type="button">Collapse all</button>
+        <button class="btn" id="zout" type="button" aria-label="Zoom out">−</button>
+        <button class="btn" id="fit" type="button">Fit</button>
+        <button class="btn" id="zin" type="button" aria-label="Zoom in">+</button>
+      </div>
+    </div>
+    <div class="strip" id="strip" aria-label="Exam sections — click to highlight related services"></div>
+    <div class="legend" id="legend" aria-label="Service groups — click to highlight"></div>
+  </header>
+  <main>
+    <div id="stage">
+      <svg id="svg" aria-label="Mind map">
+        <g id="world"></g>
+      </svg>
+      <div class="hint">
+        Click a service to open its concepts · ↑ ↓ to move through a list · drag to pan · scroll
+        to zoom
+      </div>
+    </div>
+    <aside id="panel" aria-live="polite"></aside>
+  </main>
+
+  <script src="src/data/meta.js"></script>
+  <script src="src/data/services.js"></script>
+  <script src="src/js/tree.js"></script>
+  <script src="src/js/measure.js"></script>
+  <script src="src/js/layout.js"></script>
+  <script src="src/js/render.js"></script>
+  <script src="src/js/view.js"></script>
+  <script src="src/js/panel.js"></script>
+  <script src="src/js/interactions.js"></script>
+  <script src="src/js/filters.js"></script>
+  <script src="src/js/search.js"></script>
+  <script src="src/js/boot.js"></script>
+</body>
+
+</html>
