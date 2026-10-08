@@ -2,7 +2,7 @@
 const strip = document.getElementById("strip");
 strip.innerHTML = SECTIONS.map(
   (s) =>
-    `<button type="button" class="sec" data-sec="${s.id}" aria-pressed="false" style="--w:${s.w}"><b>§${s.id}</b><span>${s.n}</span><em>~${s.w}%</em></button>`,
+    `<button type="button" class="sec" data-sec="${s.id}" aria-pressed="false"><b>§${s.id}</b><span>${s.n}</span><em>~${s.w}%</em></button>`,
 ).join("");
 const legend = document.getElementById("legend");
 legend.innerHTML = Object.entries(DOMS)
@@ -10,7 +10,15 @@ legend.innerHTML = Object.entries(DOMS)
     ([k, v]) =>
       `<button type="button" class="chip" data-dom="${k}" aria-pressed="false" style="--dc:var(--${k})"><i></i>${v.n}</button>`,
   )
-  .join("");
+  .join("") +
+  `<button type="button" class="chip gloss-btn" id="glossBtn" aria-pressed="false">Glossary</button>`;
+const glossBtn = document.getElementById("glossBtn");
+glossBtn.addEventListener("click", () => (glossary ? closeGlossary() : openGlossary()));
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && glossary && e.target !== q) {
+    closeGlossary();
+  }
+});
 function setFilter(f) {
   filter = f && filter && f.t === filter.t && f.v === filter.v ? null : f;
   document

@@ -1,6 +1,24 @@
 // ---- rendering ----
 const esc = (s) =>
   s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+// acronyms, longest first so "VPC SC" wins over "VPC" and "HTTPS" over "HTTP"; plurals and "UUIDv4" map to their base
+const ACR_RE = new RegExp(
+  `\\b(${Object.keys(ACRONYMS)
+    .sort((a, b) => b.length - a.length)
+    .join("|")})(?:s|v\\d)?\\b`,
+  "g",
+);
+// wrap acronyms in already-escaped HTML/SVG markup with a hover tooltip (tooltip.js); in the side panel a click opens the glossary;
+// tags are left untouched. The map uses <tspan> so each acronym in a label is its own target.
+const abbr = (html, el = "abbr") =>
+  html.replace(/(<[^>]*>)|([^<]+)/g, (m, tag, txt) =>
+    tag
+      ? tag
+      : txt.replace(
+          ACR_RE,
+          (w, k) => `<${el} data-acr="${esc(k)}" data-tip="${esc(ACRONYMS[k])}">${w}</${el}>`,
+        ),
+  );
 function matches(s) {
   if (!filter) {
     return true;
@@ -29,7 +47,7 @@ function draw() {
     const dim = filter && filter.t === "dom" && filter.v !== d ? " dim" : "";
     h += `<path class="arc${dim}" style="--dc:var(--${d})" d="${arcPath(HUB + 14, a0, a1)}"><title>${esc(DOMS[d].n)}</title></path>`;
   }
-  h += `<g class="hub" aria-hidden="true"><circle r="${HUB}"/><text>GCP</text></g>`;
+  h += `<g class="hub" aria-hidden="true"><circle r="${HUB}"/><text>${abbr("GCP", "tspan")}</text></g>`;
   // cards: closed first, open on top, selected last
   const order = [...services].sort(
     (a, b) =>
@@ -67,7 +85,7 @@ function cardSVG(s) {
     <rect class="card" width="${w.toFixed(1)}" height="${hgt.toFixed(1)}" rx="10"/>
     <g class="head" data-id="${s.id}" tabindex="0" role="button" aria-expanded="${s.open}" aria-label="${esc(s.label)}">
       <rect class="hit-area" width="${w.toFixed(1)}" height="${HH}" rx="10"/>
-      <text x="${PAD}" y="${HH / 2}">${esc(s.label)}</text>
+      <text x="${PAD}" y="${HH / 2}">${abbr(esc(s.label), "tspan")}</text>
       <g class="icon" transform="translate(${(w - PAD - ICON).toFixed(1)},${(HH - ICON) / 2})">
         <rect width="${ICON}" height="${ICON}" rx="4"/>
         <line x1="4" y1="${ICON / 2}" x2="${ICON - 4}" y2="${ICON / 2}"/>${s.open ? "" : `<line x1="${ICON / 2}" y1="4" x2="${ICON / 2}" y2="${ICON - 4}"/>`}
@@ -79,7 +97,7 @@ function cardSVG(s) {
     s.children.forEach((k, i) => {
       g += `<g class="row${selected === k ? " sel" : ""}${hits.has(k.id) ? " rhit" : ""}" data-id="${k.id}" tabindex="${s.open ? 0 : -1}" role="button" aria-label="${esc(k.label)}" transform="translate(0,${HH + 5 + i * RH})">
         <rect class="rowbg" x="5" width="${(w - 10).toFixed(1)}" height="${RH - 2}" rx="6"/>
-        <circle cx="${PAD + 2}" cy="${(RH - 2) / 2}" r="2.5"/><text x="${PAD + 12}" y="${(RH - 2) / 2}">${esc(k.label)}</text></g>`;
+        <circle cx="${PAD + 2}" cy="${(RH - 2) / 2}" r="2.5"/><text x="${PAD + 12}" y="${(RH - 2) / 2}">${abbr(esc(k.label), "tspan")}</text></g>`;
     });
     g += `</g>`;
   }

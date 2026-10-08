@@ -34,7 +34,7 @@ function runSearch() {
       .slice(0, 14)
       .map(
         (f) =>
-          `<button type="button" data-hit="${f.n.id}">${esc(f.n.label)}<small>${f.n.kind === "svc" ? DOMS[f.n.dom].n : esc(f.n.parent.label)}</small></button>`,
+          `<button type="button" data-hit="${f.n.id}">${abbr(esc(f.n.label))}<small>${f.n.kind === "svc" ? DOMS[f.n.dom].n : abbr(esc(f.n.parent.label))}</small></button>`,
       )
       .join("")
     : `<button type="button" disabled>No match for “${esc(q.value.trim())}”</button>`;

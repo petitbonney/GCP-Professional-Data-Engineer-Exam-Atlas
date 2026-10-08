@@ -4,6 +4,7 @@ function activate(t) {
   if (!g) {
     return;
   }
+  glossary = null;
   const n = nodes[g.dataset.id];
   if (n.kind === "svc") {
     if (n.open) {
@@ -131,6 +132,7 @@ world.addEventListener("keydown", (e) => {
   let i = (n.kind === "svc" ? -1 : list.indexOf(n)) + (e.key === "ArrowDown" ? 1 : -1);
   i = Math.max(-1, Math.min(list.length - 1, i));
   const target = i < 0 ? s : list[i];
+  glossary = null;
   selected = target;
   focusId = target.id;
   showPanel();

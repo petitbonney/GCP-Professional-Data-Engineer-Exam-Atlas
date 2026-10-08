@@ -226,8 +226,10 @@ h1 small {
 
 .sec {
   font: inherit;
-  flex: var(--w) 1 0;
+  flex: 1 1 0;
   min-width: 7.5rem;
+  display: flex;
+  align-items: baseline;
   text-align: left;
   border: 1px solid var(--line);
   background: var(--bg);
@@ -235,18 +237,7 @@ h1 small {
   border-radius: 8px;
   padding: 5px 9px;
   cursor: pointer;
-  position: relative;
   overflow: hidden;
-}
-
-.sec::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 3px;
-  width: calc(var(--w) * 4%);
-  background: var(--accent);
 }
 
 .sec b {
@@ -259,6 +250,8 @@ h1 small {
 .sec span {
   font-size: 0.8rem;
   font-weight: 600;
+  flex: 1;
+  min-width: 0;
 }
 
 .sec em {
@@ -266,8 +259,8 @@ h1 small {
   font-family: var(--mono);
   font-size: 0.72rem;
   color: var(--muted);
-  float: right;
   margin-left: 6px;
+  white-space: nowrap;
 }
 
 .sec[aria-pressed="true"],
@@ -652,4 +645,87 @@ aside h3 {
   #world {
     transition: none;
   }
+}
+/* Acronym tooltips: shown by tooltip.js on hover, no underline on the acronym itself */
+abbr[data-tip] {
+  text-decoration: none;
+}
+
+.tip {
+  position: fixed;
+  z-index: 50;
+  max-width: 280px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: var(--fg);
+  color: var(--surface);
+  font: 500 12px/1.35 var(--body);
+  white-space: pre-line;
+  pointer-events: none;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.18);
+}
+
+/* map acronyms only need hover for their tooltip; a click goes to the card as usual */
+#world [data-acr] {
+  pointer-events: auto;
+}
+
+/* in the side panel an acronym opens the glossary: give it the link cursor */
+#panel abbr[data-acr] {
+  cursor: pointer;
+}
+
+/* Glossary: opened from the legend button or by clicking an acronym in the side panel */
+.gloss-btn {
+  margin-left: auto;
+}
+
+/* glossary header stays pinned so Close is reachable from anywhere in the list; it bleeds over the panel padding */
+aside .crumb.sticky {
+  position: sticky;
+  top: -18px;
+  z-index: 1;
+  margin: -18px -20px 0;
+  padding: 18px 20px 10px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+aside .crumb .back {
+  font-family: var(--body);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.gloss {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.gloss div {
+  display: grid;
+  grid-template-columns: 4.8rem 1fr;
+  gap: 10px;
+  padding: 5px 9px;
+  border-radius: 7px;
+  border-left: 3px solid transparent;
+  line-height: 1.35;
+}
+
+.gloss dt {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.gloss dd {
+  margin: 0;
+}
+
+.gloss .on {
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface));
+  border-left-color: var(--accent);
 }
